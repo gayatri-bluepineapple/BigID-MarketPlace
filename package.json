@@ -1,0 +1,12 @@
+{
+  "name": "bigid-snow-app-feature-bigid-snow-v2",
+  "version": "1.0.0",
+  "description": "Readme 2021-05-03",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

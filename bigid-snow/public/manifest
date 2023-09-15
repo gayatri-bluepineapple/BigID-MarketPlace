@@ -1,0 +1,274 @@
+{
+  "app_name": "ServiceNOW Integration",
+  "description": "BigID integration with serviceNOW, this application works as connector between BigID and ServiceNOW.",
+  "category": "utility",
+  "license_type":"PAID",
+  "vendor": "BigID",
+  "license_verification_key": "",
+  "global_params": [
+    {
+      "param_name": "ServiceNowBaseURL",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "Parameter to capature ServiceNOW Base URL",
+      "default_value": "https://ven02761.service-now.com",
+      "hint": "put ServiceNow Base URL",
+      "param_priority": "primary",
+      "is_mandatory": true
+    },
+    {
+      "param_name": "ServiceNowConnectedAppId",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "Parameter to capature ServiceNOW Oauth Client Id",
+      "default_value": "8e07b9af49519c10ba3f42c6007dc65b",
+      "hint": "put ServiceNow Oauth Client Id",
+      "param_priority": "primary",
+      "is_mandatory": true
+    },
+    {
+      "param_name": "ServiceNowConnectedAppSecret",
+      "param_type": "String",
+      "is_cleartext": false,
+      "param_description": "Parameter to capature ServiceNOW Oauth Client Secret",
+      "default_value": "",
+      "hint": "put ServiceNow Oauth Client Secret",
+      "param_priority": "primary",
+      "is_mandatory": true
+    },
+    {
+      "param_name": "ServiceNowUsername",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "Parameter to capature ServiceNOW Username",
+      "default_value": "BPAdmin",
+      "hint": "put ServiceNow Username",
+      "param_priority": "primary",
+      "is_mandatory": true
+    },
+    {
+      "param_name": "ServiceNowPassword",
+      "param_type": "String",
+      "is_cleartext": false,
+      "param_description": "Parameter to capature ServiceNOW Password",
+      "default_value": "",
+      "hint": "put ServiceNow password",
+      "param_priority": "primary",
+      "is_mandatory": true
+    },
+    {
+      "param_name": "sn_highly_sensitive",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "The associated ServiceNow data classification level is Highly Sensitive. Enter the highest sensitivity level as defined (or to be defined) in BigID Saved Queries in lowercase",
+      "default_value": "highly restricted",
+      "param_priority": "primary",
+      "is_mandatory": true
+    },
+    {
+      "param_name": "sn_confidential",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "The associated ServiceNow data classification level is Confidential. Enter the second highest sensitivity level as defined (or to be defined) in BigID Saved Queries in lowercase",
+      "default_value": "restricted",
+      "param_priority": "primary",
+      "is_mandatory": true
+    },
+    {
+      "param_name": "sn_internal",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "The associated ServiceNow data classification level is Internal. Enter the third highest sensitivity level as defined (or to be defined) in BigID Saved Queries in lowercase",
+      "default_value": "business use",
+      "param_priority": "primary",
+      "is_mandatory": true
+    },
+    {
+      "param_name": "sn_public",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "The associated ServiceNow data classification level is Public. Enter the fourth highest sensitivity level as defined (or to be defined) in BigID Saved Queries in lowercase",
+      "default_value": "public",
+      "param_priority": "primary",
+      "is_mandatory": true
+    }, {
+          "param_name": "NamePrefix",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Specify the prefix to be used for ServiceNow DataSources within BigID",
+          "default_value": "SN_",
+          "param_priority": "primary",
+          "is_mandatory": false
+    },  {
+          "param_name": "Filter",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Specify Filter in JSON format e.g. { 'department': ['Business Unit', 'HR', 'Development'] }. key corresponds to column name in the datasource table at ServiceNow side. Value has to be array of Display Value.",
+          "default_value": "",
+          "param_priority": "primary",
+          "is_mandatory": false
+    }, {
+          "param_name": "DataCenter",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Specify Data Centers separated by commas. Keep empty to includes all data centers.",
+          "default_value": "",
+          "param_priority": "primary",
+          "is_mandatory": false
+    }, {
+          "param_name": "PDBFilter",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Specify PDB name contains filters as comma separated values. Keep empty to include all PDBs",
+          "default_value": "",
+          "param_priority": "primary",
+          "is_mandatory": false
+    }, {
+      "param_name": "BatchSize",
+      "param_type": "String",
+      "is_cleartext": true,
+      "param_description": "Specify the maximum number of records for importing bulk data",
+      "default_value": "200",
+      "param_priority": "primary",
+      "is_mandatory": true
+    }, {
+          "param_name": "Debug",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Enable debug mode (yes/no)",
+          "default_value": "no",
+          "param_priority": "primary",
+          "is_mandatory": true
+    }
+  ],
+  "actions": [
+    {
+      "action_id": "Create Sensitivity Level Saved Query",
+      "description": "This action adds any missig saved-query values.",
+      "is_sync": true,
+      "action_params": []
+    },
+    {
+      "action_id": "Import Datasources",
+      "description": "Import Datasources from serviceNOW instance.",
+      "is_sync": true,
+      "action_params": [{
+          "param_name": "DBTypes",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Specify DB Types (mysql, mssql, postgresql, db2, sybase, oracle) separated by commas. Specify 'All' to include all types",
+          "default_value": "All",
+          "param_priority": "primary",
+          "is_mandatory": false
+        },{
+          "param_name": "ScanConnectionTimeout",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Please specify Scan Connection Timeout in seconds.",
+          "default_value": "",
+          "param_priority": "primary",
+          "is_mandatory": false
+        }, {
+          "param_name": "SampleScanDataMaxSize",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Please specify Sample Scan Data Max Size.",
+          "default_value": "",
+          "param_priority": "primary",
+          "is_mandatory": false
+        }, {
+          "param_name": "NumberOfParsingThreads",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Please specify No. of parsing Threads.",
+          "default_value": "",
+          "param_priority": "primary",
+          "is_mandatory": false
+        }, {
+          "param_name": "TestConnectionTimeoutInSeconds",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Please specify Test Connection Timeout In Seconds.",
+          "default_value": "",
+          "param_priority": "primary",
+          "is_mandatory": false
+        }, {
+          "param_name": "StopOnFailure",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Please specify Stop on failure (Yes/No)",
+          "default_value": "No",
+          "param_priority": "primary",
+          "is_mandatory": false
+        }, {
+          "param_name": "EnableEnrichment",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Please specify Enable Enrichment (Yes/No)",
+          "default_value": "Yes",
+          "param_priority": "primary",
+          "is_mandatory": false
+        }, {
+          "param_name": "EnableClassification",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Please specify if Classification is Enabled (Yes/No)",
+          "default_value": "Yes",
+          "param_priority": "primary",
+          "is_mandatory": false
+        }, {
+          "param_name": "EnableStructuredClustering",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Please specify to Enable Structured Clustering (Yes/No)",
+          "default_value": "Yes",
+          "param_priority": "primary",
+          "is_mandatory": false
+        }, {
+          "param_name": "DisableRowIdentifierExpression",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Please specify if Row Identifier Expression is Disabled  (Yes/No)",
+          "default_value": "Yes",
+          "param_priority": "primary",
+          "is_mandatory": false
+        }, {
+          "param_name": "ScannerGroup",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Please specify Scanner Group",
+          "default_value": "default",
+          "param_priority": "primary",
+          "is_mandatory": false
+        }, {
+          "param_name": "BusinessOwner",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Please specify username of Business Owner user.",
+          "default_value": "",
+          "param_priority": "primary",
+          "is_mandatory": false
+        }, {
+          "param_name": "ITOwner",
+          "param_type": "String",
+          "is_cleartext": true,
+          "param_description": "Please specify username of IT Owner user.",
+          "default_value": "",
+          "param_priority": "primary",
+          "is_mandatory": false
+        }]
+    },
+    {
+      "action_id": "Export Datasources",
+      "description": "Export Datasources to serviceNOW instance.",
+      "is_sync": true,
+      "action_params": []
+    },
+    {
+      "action_id": "Sync Sensitivity Level",
+      "description": "Synchronize Sensitivity Levels to ServiceNOW.",
+      "is_sync": true,
+      "action_params": []
+    }
+  ]
+}
